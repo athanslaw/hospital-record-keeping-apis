@@ -1,6 +1,10 @@
 package com.edunge.hospitalMgmt;
 
 import com.edunge.hospitalMgmt.dto.UserDto;
+import com.edunge.hospitalMgmt.exceptions.BadRequestException;
+import com.edunge.hospitalMgmt.response.PatientResponse;
+import com.edunge.hospitalMgmt.response.UserResponse;
+import com.edunge.hospitalMgmt.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,35 +31,16 @@ import java.io.IOException;
 @SpringBootTest(classes= HospitalMgmtApplication.class)
 @ActiveProfiles("local")
 public class UserDetailsTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsTest.class);
 
     private static final UserDto userDto = new UserDto();
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    private MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
-
+    UserService userService;
 
     @Test
-    public void registerNewUser() throws IOException {
-        String requestContent = MAPPER.writeValueAsString(userDto);
-        try {
-            MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/api/v1/users")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestContent))
-                    .andExpect(MockMvcResultMatchers.status().is(200))
-                    .andReturn();
-            LOGGER.info(result.getResponse().getContentAsString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void registerStaff() throws BadRequestException {
+        userDto.setName("Athanasius Samuel");
+        UserResponse patients = userService.saveUser(userDto);
+        assert(patients.getStatusCode().equals("00"));
     }
 
 }

@@ -65,7 +65,7 @@ public class PatientServiceImpl implements PatientService {
         Date last2Years = this.lastXYears(-2);
 
         List<Patient> patients = patientRepository.findByCreatedAtGreaterThan(last2Years);
-        return new PatientResponse("00", "Patient Updated Successfully.", patients);
+        return new PatientResponse("00", "Records Retrieved Successfully.", patients);
     }
 
     @Override

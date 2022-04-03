@@ -1,12 +1,9 @@
 package com.edunge.hospitalMgmt;
 
-import com.edunge.hospitalMgmt.dto.UserDto;
+import com.edunge.hospitalMgmt.dto.PatientDto;
 import com.edunge.hospitalMgmt.exceptions.NotFoundException;
 import com.edunge.hospitalMgmt.response.PatientResponse;
 import com.edunge.hospitalMgmt.service.PatientService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,9 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -34,29 +28,21 @@ public class PatientsTest {
 
     @Autowired
     PatientService patientService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(PatientsTest.class);
+    private static final PatientDto patientDto = new PatientDto();
 
-    private static final UserDto userDto = new UserDto();
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    private MockMvc mockMvc;
-
-    @BeforeClass
-    public static void deleteTestFiles(){
-        userDto.setName("Athanasius Lawrence");
+    @Test
+    public void savePatientRecord() {
+        patientDto.setAge(25);
+        patientDto.setName("Amos Samuel");
+        PatientResponse patients = patientService.savePatientRecord(patientDto);
+        assert(patients.getStatusCode().equals("00"));
     }
-
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
-
 
     @Test
     public void fetchPatientProfileSince2Years() throws NotFoundException {
         PatientResponse patients = patientService.getPatientRecords(2);
-        assert(patients.getPatients().size() > 0);
+        assert(patients.getStatusCode().equals("00"));
     }
 
     @Test
@@ -69,7 +55,7 @@ public class PatientsTest {
         LocalDateTime dateTo1 = Instant.ofEpochMilli(dateTo.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         PatientResponse patients = patientService.getPatientRecords(dateFrom1, dateTo1);
-        assert(patients.getPatients().size() > 0);
+        assert(patients.getStatusCode().equals("00"));
     }
 
     @Test
@@ -82,7 +68,7 @@ public class PatientsTest {
         LocalDateTime dateTo1 = Instant.ofEpochMilli(dateTo.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         PatientResponse patients = patientService.deletePatientRecords(dateFrom1, dateTo1);
-        assert(patients.getPatients().size() > 0);
+        assert(patients.getStatusCode().equals("00"));
     }
 
 }

@@ -1,22 +1,18 @@
 package com.edunge.hospitalMgmt.service.impl;
 
 import com.edunge.hospitalMgmt.dto.UserDto;
-import com.edunge.hospitalMgmt.exceptions.AuthException;
 import com.edunge.hospitalMgmt.exceptions.BadRequestException;
 import com.edunge.hospitalMgmt.exceptions.NotFoundException;
 import com.edunge.hospitalMgmt.model.*;
 import com.edunge.hospitalMgmt.repository.UserRepository;
 import com.edunge.hospitalMgmt.response.UserResponse;
 import com.edunge.hospitalMgmt.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {

@@ -27,16 +27,6 @@ public class UserResponse extends BaseResponse {
         this.users = users;
     }
 
-    public UserResponse(String code, String user_retrieved, User user) {
-        super(code, user_retrieved);
-        this.user = user;
-    }
-
-    public UserResponse(String code, String message) {
-        super(code, message);
-
-    }
-
     public User getUser() {
         return user;
     }
@@ -45,11 +35,4 @@ public class UserResponse extends BaseResponse {
         this.user = user;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }
